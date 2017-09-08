@@ -1,0 +1,63 @@
+<html>
+<head>
+<link rel="stylesheet" type="text/css" href="//yui.yahooapis.com/3.18.1/build/cssreset/cssreset-min.css">
+<link rel="stylesheet" media="all" href="./style.css">
+</head>
+<body>
+<div id="titles"><div id="titlecontent">
+    <p>Your Own Book Shop for a Week- Read, listen and learn a little English! ... Posted by Annette Porte in business, free time, society, travel Tags: airbnb, article, audio, efl, learn english, listening, news, polite, short audio, tefl, the </p>
+</div></div>
+<script src="./node_modules/html2canvas/dist/html2canvas.min.js"></script>
+<script src="./node_modules/gifshot/build/gifshot.js"></script>
+<script>
+var images = [];
+var progress = false;
+
+document.addEventListener("DOMContentLoaded", function(){
+    var timer = setInterval(function(){
+        html2canvas(document.body).then(function(canvas) {
+            var image = new Image();
+            image.src = canvas.toDataURL("image/jpeg")
+            images.push(image);
+
+            if (images.length > 100) {
+                console.log("here");
+                create();
+                clearInterval(timer);
+            }
+        });
+    }, 100);
+});
+
+function lock() {
+    if (progress) {
+        return false;
+    }
+
+    progress = true;
+
+    return true;
+}
+
+function create() {
+    if (!lock()) {
+        return;
+    }
+    gifshot.createGIF({
+        images: images,
+        gifWidth: document.documentElement.clientWidth,
+        gifHeight: document.documentElement.clientHeight,
+        interval: 0.1
+    }, function(obj) {
+        console.dir(obj);
+        if(!obj.error) {
+            var image = obj.image,
+            animatedImage = document.createElement('img');
+            animatedImage.src = image;
+            document.body.appendChild(animatedImage);
+        }
+    });
+}
+</script>
+</body>
+</html>
